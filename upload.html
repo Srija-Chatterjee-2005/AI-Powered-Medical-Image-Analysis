@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Scan</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="navbar">📤 Upload X-Ray Scan</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Select Chest X-Ray Images</h2>
+        <p>Upload one NORMAL and one PNEUMONIA scan for comparison</p>
+
+        <form action="/predict" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+            
+            <label>Image 1 (Normal)</label><br>
+            <input type="file" name="image1" required>
+            <br><br>
+
+            <label>Image 2 (Pneumonia)</label><br>
+            <input type="file" name="image2" required>
+            <br><br>
+
+            <button class="btn">🧠 Analyze Images</button>
+
+        </form>
+
+        <!-- LOADER -->
+        <div id="loading" style="display:none; text-align:center; margin-top:20px;">
+            <div class="loader"></div>
+            <p>Analyzing X-ray... Please wait</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+function showLoading() {
+    document.getElementById("loading").style.display = "block";
+}
+</script>
+
+</body>
+</html>

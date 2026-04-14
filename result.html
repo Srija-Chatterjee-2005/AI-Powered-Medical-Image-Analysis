@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h2>🧾 Diagnosis</h2>
+
+        <div class="status {% if 'PNEUMONIA' in label %}danger{% else %}safe{% endif %}">
+            {{ label }}
+        </div>
+
+        <p><b>Confidence:</b> {{ confidence }}%</p>
+
+        <div class="progress">
+            <div class="bar" style="width: {{ confidence }}%"></div>
+        </div>
+
+        <br>
+
+        <a href="/upload">
+            <button class="btn">🔁 New Scan</button>
+        </a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <h1>🧠 AI Analysis Dashboard</h1>
+
+        <!-- MAIN IMAGE ROW -->
+        <div class="card-row">
+
+            <div class="card">
+                <h3>Original X-Ray</h3>
+                <img src="{{ image_path }}">
+            </div>
+
+            <div class="card">
+                <h3>AI Heatmap</h3>
+                <img src="{{ outputs[5] }}">
+            </div>
+
+        </div>
+
+        <!-- PIPELINE -->
+        <h2>📊 Processing Pipeline</h2>
+
+        <div class="grid">
+            {% for img in outputs %}
+                <img src="{{ img }}">
+            {% endfor %}
+        </div>
+
+        <!-- REPORT -->
+        <div class="report">
+            <h2>🩺 Clinical Report</h2>
+            <p><b>Result:</b> {{ result.label }}</p>
+            <p><b>Confidence:</b> {{ result.confidence }}%</p>
+            <p>This AI model analyzes chest X-rays and highlights suspicious lung regions.</p>
+        </div>
+
+        <!-- ============================= -->
+        <!-- NEW ADVANCED SECTION BELOW -->
+        <!-- ============================= -->
+
+        <hr style="margin:40px 0;">
+
+        <h2 style="text-align:center;">🆚 Dual Image Comparison</h2>
+
+        <div class="compare-container">
+
+            <div class="compare-box">
+                <h3>Image 1</h3>
+                <img src="{{ img1 }}">
+                <p>{{ result1.label }}</p>
+                <p>{{ result1.confidence }}%</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="compare-box">
+                <h3>Image 2</h3>
+                <img src="{{ img2 }}">
+                <p>{{ result2.label }}</p>
+                <p>{{ result2.confidence }}%</p>
+            </div>
+
+        </div>
+
+        <!-- GRAPH 1 -->
+        <h2>📊 Comparison Graph</h2>
+        <canvas id="compareChart"></canvas>
+
+        <!-- GRAPH 2 -->
+        <h2>📈 Prediction Trend</h2>
+        <canvas id="trendChart"></canvas>
+
+    </div>
+</div>
+
+<!-- ============================= -->
+<!-- CHART SCRIPT -->
+<!-- ============================= -->
+
+<script>
+
+new Chart(document.getElementById('compareChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Image 1', 'Image 2'],
+        datasets: [{
+            label: 'Confidence (%)',
+            data: [{{ result1.confidence }}, {{ result2.confidence }}]
+        }]
+    }
+});
+
+new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+        labels: ['Scan1','Scan2','Scan3','Scan4'],
+        datasets: [{
+            label: 'Prediction Trend',
+            data: [20, 40, {{ result1.confidence }}, {{ result2.confidence }}]
+        }]
+    }
+});
+
+</script>
+
+</body>
+</html>
