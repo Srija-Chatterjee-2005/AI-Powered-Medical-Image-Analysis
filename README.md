@@ -157,6 +157,8 @@ pip install -r requirements.txt
 
 python app.py
 
+https://github.com/user-attachments/assets/f18a6fcd-d90e-47a4-a95f-ff6f1245dc13
+
 ---
 
 ## **🔍 Features**
